@@ -66,6 +66,5 @@ def add_tweet():
 def all_tweets():
     tweets = db.child("tweet").get().val()
     return render_template("all_tweets.html", tweets=tweets)
-
 if __name__ == '__main__':
     app.run(debug=True)
