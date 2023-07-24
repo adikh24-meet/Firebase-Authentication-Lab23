@@ -17,20 +17,28 @@ auth = firebase.auth()
 
 @app.route('/', methods=['GET', 'POST'])
 def signin():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        try:
+            login_session['user'] = auth.sign_in_with_email_and_password(email, password)
+            return redirect(url_for('add_tweet'))
+        except:
+             error = "Authentication failed"
     return render_template("signin.html")
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.request.form['email']
-        password = request.request.form['password']
+        email = request.form['email']
+        password = request.form['password']
         try:
             login_session['user'] = auth.create_user_with_email_and_password(email, password)
-            return redirect(url_for('home'))
+            return redirect(url_for('add_tweet'))
         except:
              error = "Authentication failed"
-    return render_template("add_tweet.html")
+    return render_template("signup.html")
 
 
 @app.route('/add_tweet', methods=['GET', 'POST'])
