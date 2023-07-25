@@ -44,7 +44,7 @@ def signup():
             db.child("Users").child(UID).set(user)
             return redirect(url_for('add_tweet'))
         except:
-             error = "Authentication failed"
+             return "Authentication failed"
     return render_template("signup.html")
 
 
@@ -55,7 +55,7 @@ def add_tweet():
         text = request.form['text']
         try:
             tweet = {"title": request.form['title'], "text": request.form['text']}
-            db.child("tweets").child(UID).set(tweet)
+            db.child("tweets").push(tweet)
             return redirect(url_for('/all_tweets'))
         except:
              error = "tweet failed"
@@ -64,7 +64,9 @@ def add_tweet():
 
 @app.route('/all_tweets', methods=['GET', 'POST'])
 def all_tweets():
-    tweets = db.child("tweet").get().val()
+    tweets = db.child("tweets").get().val()
     return render_template("all_tweets.html", tweets=tweets)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
